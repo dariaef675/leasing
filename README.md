@@ -9,6 +9,8 @@
 
 A web application for a leasing company: clients, equipment catalogue, leasing contracts, a payment calculator and a statistics dashboard. Built as a university coursework project.
 
+**Live demo:** <https://dariaef675.github.io/leasing/> — the frontend running in the browser on sample data, without a server. You can sign in as any role from the bar at the bottom.
+
 The backend is a REST API written in Go (Gin + GORM + PostgreSQL). The frontend is a single-page application in plain JavaScript, served by the same binary.
 
 ## Features
