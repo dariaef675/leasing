@@ -68,7 +68,7 @@ func Load() *Config {
 			Host:     getEnv("DB_HOST", "localhost"),
 			Port:     getEnv("DB_PORT", "5432"),
 			User:     getEnv("DB_USER", "postgres"),
-			Password: getEnv("DB_PASSWORD", "change_me"),
+			Password: getEnv("DB_PASSWORD", ""),
 			DBName:   getEnv("DB_NAME", "leasing_db"),
 			SSLMode:  getEnv("DB_SSLMODE", "disable"),
 		},
@@ -77,7 +77,7 @@ func Load() *Config {
 			Host: getEnv("SERVER_HOST", "0.0.0.0"),
 		},
 		JWT: JWTConfig{
-			SecretKey: getEnv("JWT_SECRET", "change_me"),
+			SecretKey: getEnv("JWT_SECRET", ""),
 			ExpiresIn: 24,
 		},
 	}
@@ -94,20 +94,8 @@ func Load() *Config {
 		cfg.Database.Host = "127.0.0.1"
 	}
 
-	if cfg.Database.Password == "postgres" || len(cfg.Database.Password) != 6 {
-		log.Printf("ОШИБКА: Password issue! Value='%s', length=%d", cfg.Database.Password, len(cfg.Database.Password))
-		if pwd := os.Getenv("DB_PASSWORD"); pwd != "" && len(pwd) == 6 {
-			log.Println("Найден правильный DB_PASSWORD в окружении, используем его")
-			cfg.Database.Password = pwd
-		} else {
-			log.Println("Trying to reload .env file...")
-			if err := godotenv.Overload(); err == nil {
-				if pwd := os.Getenv("DB_PASSWORD"); pwd != "" {
-					log.Printf("Перезагружаем DB_PASSWORD, length=%d", len(pwd))
-					cfg.Database.Password = pwd
-				}
-			}
-		}
+	if cfg.JWT.SecretKey == "" {
+		log.Fatal("ОШИБКА: JWT_SECRET не задан, укажите его в .env или в переменных окружения")
 	}
 
 	return cfg

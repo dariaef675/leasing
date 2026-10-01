@@ -4,9 +4,11 @@
 
 echo "Настройка базы данных для лизинговой службы..."
 
+if [ -f .env ]; then
+    export $(cat .env | grep -v '^#' | xargs)
+fi
 
-# измените пароль для БД здесь
-PGPASSWORD=change_me psql -U postgres -h localhost << EOF
+PGPASSWORD=$DB_PASSWORD psql -U ${DB_USER:-postgres} -h ${DB_HOST:-localhost} << EOF
 
 -- Создание базы данных (если не существует)
 SELECT 'CREATE DATABASE leasing_db'
@@ -28,7 +30,7 @@ else
     echo ""
     echo "Попробуйте изменить пароль в PostgreSQL:"
     echo "sudo -u postgres psql"
-    echo "ALTER USER postgres PASSWORD 'change_me';"
+    echo "ALTER USER postgres PASSWORD '<ваш пароль>';"
 fi
 
 
