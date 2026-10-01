@@ -1,0 +1,13 @@
+# Build artifacts
+/main
+/leasing
+*.exe
+*.out
+
+# Environment
+.env
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
